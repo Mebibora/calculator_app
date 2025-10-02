@@ -7,27 +7,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Calculator App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Calculator App'),
@@ -38,15 +23,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -55,34 +31,37 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   
-  String statement = "";
-  String statement2 = "";
+  String statement = "";  //variable to keep track of text to be displayed
+  String statement2 = ""; //variable to specifically keep track of text displayed after operator
   String leftSide = "";
   String rightSide = "";
-  String operator = "";
-  int leftInt = 0;
-  int rightInt = 0;
-  bool operatorActive = false;
+  String operator = "";   //variable to track which operator is being used
+  int leftInt = 0;        //variable to track left side of integer before the operator
+  int rightInt = 0;       //variable to track right side of integer before the operator
+  bool operatorActive = false;  //variale to check if an operator has appeared in statement yet
 
-  void addToStatement(x){
+  void addToStatement(x){ //function to update statement
     setState(() {
       statement = statement + x;
     });
   }
 
-  void addToStatement2(x){
+  void addToStatement2(x){  //function to update statement2
     setState(() {
       statement2 = statement2 + x;
     });
   }
-  void deleteCharacter(){
+
+  void deleteCharacter(){   //function to remove the last character from statement and statement2
     setState(() {
       statement = statement.substring(0, statement.length -1);
-      statement2 = statement2.substring(0, statement2.length -1);
+      if (statement2.isNotEmpty){
+        statement2 = statement2.substring(0, statement2.length -1);
+      }
     });
   }
 
-  String getOperator(op){
+  String getOperator(op){   //function to read operator and trigger operatorActive to be true
     switch(op){
         case "/":
         operator = "/";
@@ -104,19 +83,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return "error";
   }
   
-  int getLeftSide(){
+  int getLeftSide(){    //converts statement from string to integer
     leftSide = statement;
     leftInt = int.parse(leftSide);
     return leftInt;
   }
 
-  int getRightSide(){
+  int getRightSide(){   //converts statement2 from string to integer
     rightSide = statement2;
     rightInt = int.parse(rightSide);
     return rightInt;
   }
 
-  void evaluate(){
+  void evaluate(){      //evaluates statement using leftInt, operator, and rightInt
     setState(() {
       int result = 0;
 
@@ -130,25 +109,22 @@ class _MyHomePageState extends State<MyHomePage> {
         case "+":
         result = leftInt + rightInt;
       }
-
       
       statement = result.toString();
 
-      operatorActive = false;  
+      operatorActive = false;  //resets all the variables besides statement
       statement2 = "";
       leftSide = "";
       rightSide = "";
       operator = "";
       leftInt = 0;
       rightInt = 0;
-  
-
     });
   }
 
   void clear() {
     setState((){
-      operatorActive = false; 
+      operatorActive = false;   //resets all the variables including statement
       statement = ""; 
       statement2 = "";
       leftSide = "";
@@ -161,27 +137,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+      appBar: AppBar(        
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,       
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Center(       //begins calculator display
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
+            Container(    //container for statement to be displayed
               width: 200,
               height: 50,
               decoration: BoxDecoration(

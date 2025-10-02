@@ -54,16 +54,95 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  
+  String statement = "";
+  String statement2 = "";
+  String leftSide = "";
+  String rightSide = "";
+  String operator = "";
+  int leftInt = 0;
+  int rightInt = 0;
+  bool operatorActive = false;
 
-  void _incrementCounter() {
+  void addToStatement(x){
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      statement = statement + x;
+    });
+  }
+
+  void addToStatement2(x){
+    setState(() {
+      statement2 = statement2 + x;
+    });
+  }
+  void deleteCharacter(){
+    setState(() {
+      statement = statement.substring(0, statement.length -1);
+      statement2 = statement2.substring(0, statement2.length -1);
+    });
+  }
+
+  String getOperator(op){
+    switch(op){
+        case "/":
+        operator = "/";
+        operatorActive = true;
+        return "/";
+        case "*":
+        operator = "*";
+        operatorActive = true;
+        return "*";
+        case "-":
+        operator = "-";       
+        operatorActive = true;
+        return "-";
+        case "+":
+        operator = "+";
+        operatorActive = true;
+        return"+";
+      }
+    return "error";
+  }
+  
+  int getLeftSide(){
+    leftSide = statement;
+    leftInt = int.parse(leftSide);
+    return leftInt;
+  }
+
+  int getRightSide(){
+    rightSide = statement2;
+    rightInt = int.parse(rightSide);
+    return rightInt;
+  }
+
+  void evaluate(){
+    setState(() {
+      int result = 0;
+
+      switch(operator){
+        case "/":
+        result = leftInt ~/ rightInt;
+        case "*":
+        result = leftInt * rightInt;
+        case "-":
+        result = leftInt - rightInt;
+        case "+":
+        result = leftInt + rightInt;
+      }
+
+      
+      statement = result.toString();
+      operatorActive = false;
+      
+      statement2 = "";
+      leftSide = "";
+      rightSide = "";
+      operator = "";
+      leftInt = 0;
+      rightInt = 0;
+  
+
     });
   }
 
@@ -91,31 +170,53 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               width: 200,
-              height: 100,
+              height: 50,
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Colors.black,
                   width: 2),
-              )
+              ),
+              child: Text(
+                statement,
+                style: TextStyle(
+                  fontSize:30,
+                ),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("7");
+                    if (operatorActive){
+                      addToStatement2("7");
+                    }
                   }, 
                 child: Text("7")),
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("8");
+                    if (operatorActive){
+                      addToStatement2("8");
+                    }
                   }, 
                 child: Text("8")),
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("9");
+                    if (operatorActive){
+                      addToStatement2("9");
+                    }
                   }, 
                 child: Text("9")),
+                ElevatedButton(
+                  onPressed: () {
+                    getLeftSide();
+                    addToStatement("/");
+                    getOperator("/");
+                  }, 
+                child: Text("/")),
 
               ],
             ),
@@ -124,19 +225,35 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("4");
+                    if (operatorActive){
+                      addToStatement2("4");
+                    }
                   }, 
                 child: Text("4")),
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("5");
+                    if (operatorActive){
+                      addToStatement2("5");
+                    }
                   }, 
                 child: Text("5")),
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("6");
+                    if (operatorActive){
+                      addToStatement2("6");
+                    }
                   }, 
                 child: Text("6")),
+                ElevatedButton(
+                  onPressed: () {
+                    getLeftSide();
+                    addToStatement("*");
+                    getOperator("*");
+                  }, 
+                child: Text("*")),
 
               ],
             ),
@@ -145,19 +262,35 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("1");
+                    if (operatorActive){
+                      addToStatement2("1");
+                    }
                   }, 
                 child: Text("1")),
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("2");
+                    if (operatorActive){
+                      addToStatement2("2");
+                    }
                   }, 
                 child: Text("2")),
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("3");
+                    if (operatorActive){
+                      addToStatement2("3");
+                    }
                   }, 
                 child: Text("3")),
+                ElevatedButton(
+                  onPressed: () {
+                    getLeftSide();
+                    addToStatement("-");
+                    getOperator("-");
+                  }, 
+                child: Text("-")),
 
               ],
             ),
@@ -166,19 +299,30 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-
+                    addToStatement("0");
+                    if (operatorActive){
+                      addToStatement2("0");
+                    }
                   }, 
                 child: Text("0")),
                 ElevatedButton(
                   onPressed: () {
-
+                    deleteCharacter();
                   }, 
                 child: Text("<-")),
                 ElevatedButton(
                   onPressed: () {
-
+                    getRightSide();
+                    evaluate();
                   }, 
                 child: Text("enter")),
+                ElevatedButton(
+                  onPressed: () {
+                    getLeftSide();
+                    addToStatement("+");
+                    getOperator("+");
+                  }, 
+                child: Text("+")),
 
               ],
             ),

@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Calculator App',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Calculator App'),
     );
   }
 }
@@ -133,8 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       
       statement = result.toString();
-      operatorActive = false;
-      
+
+      operatorActive = false;  
       statement2 = "";
       leftSide = "";
       rightSide = "";
@@ -143,6 +143,19 @@ class _MyHomePageState extends State<MyHomePage> {
       rightInt = 0;
   
 
+    });
+  }
+
+  void clear() {
+    setState((){
+      operatorActive = false; 
+      statement = ""; 
+      statement2 = "";
+      leftSide = "";
+      rightSide = "";
+      operator = "";
+      leftInt = 0;
+      rightInt = 0;
     });
   }
 
@@ -324,6 +337,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   }, 
                 child: Text("+")),
 
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    clear();
+                  }, 
+                child: Text("c")),
               ],
             ),
           ],
